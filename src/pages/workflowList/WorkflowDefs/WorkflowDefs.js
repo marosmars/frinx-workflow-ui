@@ -18,6 +18,7 @@ import PageSelect from "../../../common/PageSelect";
 import WfLabels from "../../../common/WfLabels";
 import DefinitionModal from "./DefinitonModal/DefinitionModal";
 import DiagramModal from "./DiagramModal/DiagramModal";
++import SchedulingModal from "../Scheduling/SchedulingModal/SchedulingModal";
 import InputModal from "./InputModal/InputModal";
 import { HttpClient as http } from "../../../common/HttpClient";
 import { conductorApiUrlPrefix, frontendUrlPrefix } from "../../../constants";
@@ -34,6 +35,7 @@ class WorkflowDefs extends Component {
       activeWf: null,
       defModal: false,
       diagramModal: false,
+      schedulingModal: false,
       defaultPages: 20,
       pagesCount: 1,
       viewedPage: 1,
@@ -223,6 +225,7 @@ class WorkflowDefs extends Component {
       data.description = "- FAVOURITE";
     }
     http.put(conductorApiUrlPrefix + "/metadata/", [data]).then(() => {
+      // TODO: merge with componentDidMount
       http.get(conductorApiUrlPrefix + "/metadata/workflow").then(res => {
         let dataset =
           res.result.sort((a, b) =>
@@ -278,15 +281,29 @@ class WorkflowDefs extends Component {
     return labels;
   };
 
+  getActiveWorkflowName() {
+    if (this.state.activeRow != null && this.state.data[this.state.activeRow] != null) {
+      return this.state.data[this.state.activeRow].name;
+    }
+    return null;
+  }
+
+  getActiveWorkflowVersion() {
+    if (this.state.activeRow != null && this.state.data[this.state.activeRow] != null) {
+      return this.state.data[this.state.activeRow].version;
+    }
+    return null;
+  }
+
   editWorkflow() {
-    const name = this.state.activeWf.split(" / ")[0];
-    const version = this.state.activeWf.split(" / ")[1];
+    const name = this.getActiveWorkflowName();
+    const version = this.getActiveWorkflowVersion();
     this.props.history.push(`${frontendUrlPrefix}/builder/${name}/${version}`);
   }
 
   deleteWorkflow() {
-    const name = this.state.activeWf.split(" / ")[0];
-    const version = this.state.activeWf.split(" / ")[1];
+    const name = this.getActiveWorkflowName();
+    const version = this.getActiveWorkflowVersion();
     http
       .delete(conductorApiUrlPrefix + "/metadata/workflow/" + name + "/" + version)
       .then(() => {
@@ -384,6 +401,12 @@ class WorkflowDefs extends Component {
                     />
                   </Button>
                   <Button
+                    variant="outline-light noshadow"
+                   onClick={this.showSchedulingModal.bind(this)}
+                  >
+                    {dataset[i].hasSchedule ? 'Edit schedule' : 'Create schedule'}
+                  </Button>
+                  <Button
                     variant="outline-danger noshadow"
                     style={{ float: "right" }}
                     onClick={this.deleteWorkflow.bind(this)}
@@ -423,11 +446,32 @@ class WorkflowDefs extends Component {
     });
   }
 
+  showSchedulingModal() {
+    this.setState({
+      schedulingModal: true
+    });
+  }
+
   showDiagramModal() {
     this.setState({
       diagramModal: !this.state.diagramModal
     });
   }
+
+  onSchedulingModalClose() {
+    this.setState({
+      schedulingModal: false
+    });
+    this.componentDidMount();
+  }
+
+  getActiveRowScheduleName() {
+    if (this.state.activeRow != null && this.state.data[this.state.activeRow] != null) {
+      return this.state.data[this.state.activeRow].expectedScheduleName;
+    }
+    return null;
+  }
+
 
   render() {
     let definitionModal = this.state.defModal ? (
@@ -459,6 +503,13 @@ class WorkflowDefs extends Component {
         {definitionModal}
         {inputModal}
         {diagramModal}
+        <SchedulingModal
+          name={this.getActiveRowScheduleName()}
+          workflowName={this.getActiveWorkflowName()}
+          workflowVersion={this.getActiveWorkflowVersion()}
+          onClose={this.onSchedulingModalClose.bind(this)}
+          show={this.state.schedulingModal}
+        />
         <Row>
           <Button
             style={{ marginBottom: "15px", marginLeft: "15px" }}

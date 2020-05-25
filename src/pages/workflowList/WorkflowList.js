@@ -5,6 +5,7 @@ import { withRouter } from "react-router-dom";
 import { HttpClient as http } from "../../common/HttpClient";
 import WorkflowDefs from "./WorkflowDefs/WorkflowDefs";
 import WorkflowExec from "./WorkflowExec/WorkflowExec";
+import Scheduling from "./Scheduling/Scheduling";
 import { conductorApiUrlPrefix, frontendUrlPrefix } from "../../constants";
 import {changeUrl, exportButton} from './workflowUtils'
 import EventListeners from "./EventListeners/EventListeners";
@@ -86,13 +87,15 @@ const WorkflowList = (props) => {
             defaultActiveKey={props.match.params.type || "defs"}
             style={{ marginBottom: "20px" }}
         >
-          <Tab eventKey="defs" title="Definitions">
+          <Tab mountOnEnter unmountOnExit eventKey="defs" title="Definitions">
             <WorkflowDefs />
           </Tab>
           <Tab mountOnEnter unmountOnExit eventKey="exec" title="Executed">
             <WorkflowExec query={query} />
           </Tab>
-          <Tab eventKey="scheduled" title="Scheduled" disabled></Tab>
+          <Tab mountOnEnter unmountOnExit eventKey="scheduled" title="Scheduled">
+            <Scheduling />
+          </Tab>
           <Tab eventKey="eventlisteners" title="Event Listeners">
             <EventListeners/>
           </Tab>
