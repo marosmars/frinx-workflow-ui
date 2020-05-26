@@ -1,6 +1,5 @@
 import React, { useState } from "react";
 import { Button, Modal, Form } from "react-bootstrap";
-import { conductorApiUrlPrefix } from "../../../../constants";
 import superagent from "superagent";
 
 const stateSubmit = "Submit";
@@ -10,6 +9,7 @@ const SchedulingModal = props => {
   const [schedule, setSchedule] = useState();
   const [status, setStatus] = useState();
   const [error, setError] = useState();
+  const backendApiUrlPrefix = props.backendApiUrlPrefix;
 
   const handleClose = () => {
     props.onClose();
@@ -19,7 +19,7 @@ const SchedulingModal = props => {
     setSchedule(null);
     setStatus(stateSubmit);
     setError(null);
-    const path = conductorApiUrlPrefix + "/schedule/" + props.name;
+    const path = backendApiUrlPrefix + "/schedule/" + props.name;
     const req = superagent.get(path).accept("application/json");
     req.end((err, res) => {
       if (res && res.ok) {
@@ -44,7 +44,7 @@ const SchedulingModal = props => {
   const submitForm = () => {
     setError(null);
     setStatus(stateSubmitting);
-    const path = conductorApiUrlPrefix + "/schedule/" + props.name;
+    const path = backendApiUrlPrefix + "/schedule/" + props.name;
     const req = superagent.put(path, schedule).set("Content-Type", "application/json");
     req.end((err, res) => {
       if (res && res.ok) {

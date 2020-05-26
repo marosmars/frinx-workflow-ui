@@ -11,7 +11,6 @@ import {
 import { withRouter } from "react-router-dom";
 import PageCount from "../../../common/PageCount";
 import PageSelect from "../../../common/PageSelect";
-import { conductorApiUrlPrefix, frontendUrlPrefix } from "../../../constants";
 import SchedulingModal from "./SchedulingModal/SchedulingModal";
 import superagent from "superagent";
 
@@ -24,9 +23,10 @@ const Scheduling = props => {
   const [error, setError] = useState(undefined);
   const [defaultPages, setDefaultPages] = useState(20);
   const [viewedPage, setViewedPage] = useState(1);
+  const backendApiUrlPrefix = backendApiUrlPrefix;
 
   const refresh = () => {
-    const path = conductorApiUrlPrefix + "/schedule/";
+    const path = backendApiUrlPrefix + "/schedule/";
     const req = superagent.get(path).accept("application/json");
     req.end((err, res) => {
       if (res && res.ok && Array.isArray(res.body)) {
@@ -73,7 +73,7 @@ const Scheduling = props => {
   };
 
   const deleteEntry = (schedulingEntry) => {
-    const path = conductorApiUrlPrefix + "/schedule/" + schedulingEntry.name;
+    const path = backendApiUrlPrefix + "/schedule/" + schedulingEntry.name;
     const req = superagent.delete(path).accept("application/json");
     req.end((err, res) => {
       if (res && res.ok) {

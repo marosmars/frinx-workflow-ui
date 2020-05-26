@@ -1,7 +1,6 @@
 import { HttpClient as http } from "../../common/HttpClient";
 import { round } from "lodash/math";
 import { fetchNewData, fetchParentWorkflows } from "./searchExecs";
-import { conductorApiUrlPrefix } from "../../constants";
 
 export const IS_FLAT = "IS_FLAT";
 export const REQUEST_BULK_OPERATION = "REQUEST_BULK_OPERATION";

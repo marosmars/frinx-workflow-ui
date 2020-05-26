@@ -12,7 +12,6 @@ import buildReducer from "./store/reducers/builder";
 import bulkReducer from "./store/reducers/bulk";
 import mountedDeviceReducer from "./store/reducers/mountedDevices";
 import searchReducer from "./store/reducers/searchExecs";
-import { frontendUrlPrefix } from "./constants";
 
 const rootReducer = combineReducers({
   bulkReducer,
@@ -34,11 +33,11 @@ function App() {
         <BrowserRouter>
           <Switch>
             <Route
-                exact
-                path={[frontendUrlPrefix + "/:type", frontendUrlPrefix + "/:type/:wfid", "/"]}
-                component={WorkflowListReadOnly}
+              exact
+              path={[props.frontendUrlPrefix + "/:type", props.frontendUrlPrefix + "/:type/:wfid", "/"]}
+              render={(props) => (<WorkflowListReadOnly hideHeader={hideHeader} {...props}/>))}
             />
-            <Redirect from={frontendUrlPrefix} to={frontendUrlPrefix + "/defs"} />
+            <Redirect from={props.frontendUrlPrefix} to={props.frontendUrlPrefix + "/defs"} />
           </Switch>
         </BrowserRouter>
       </Provider>

@@ -6,11 +6,10 @@ import { HttpClient as http } from "../../common/HttpClient";
 import WorkflowDefs from "./WorkflowDefs/WorkflowDefs";
 import WorkflowExec from "./WorkflowExec/WorkflowExec";
 import Scheduling from "./Scheduling/Scheduling";
-import { conductorApiUrlPrefix, frontendUrlPrefix } from "../../constants";
 import {changeUrl, exportButton} from './workflowUtils'
 import EventListeners from "./EventListeners/EventListeners";
 
-const workflowModifyButtons = (openFileUpload, history) => {
+const workflowModifyButtons = (openFileUpload, history, frontendUrlPrefix) => {
   return [
     <Button
         variant="outline-primary"
@@ -31,18 +30,20 @@ const workflowModifyButtons = (openFileUpload, history) => {
   ];
 }
 
-const upperMenu = (history, openFileUpload) => {
+const upperMenu = (history, openFileUpload, frontendUrlPrefix) => {
   return(
       <h1 style={{ marginBottom: "20px" }}>
         <i style={{ color: "grey" }} className="fas fa-cogs" />
         &nbsp;&nbsp;Workflows
-        { workflowModifyButtons(openFileUpload, history) }
+        { workflowModifyButtons(openFileUpload, history, frontendUrlPrefix) }
         { exportButton() }
       </h1>);
 }
 
 const WorkflowList = (props) => {
-  let urlUpdater = changeUrl(props.history);
+  const backendApiUrlPrefix = props.backendApiUrlPrefix;
+  const frontendUrlPrefix = props.frontendUrlPrefix;
+  let urlUpdater = changeUrl(props.history, frontendUrlPrefix);
   let query = props.match.params.wfid ? props.match.params.wfid : null;
 
   const importFiles = (e) => {
@@ -60,7 +61,7 @@ const WorkflowList = (props) => {
         let definition = JSON.parse(e.target.result);
         fileList.push(definition);
         if (!--count) {
-          http.put(conductorApiUrlPrefix + '/metadata', fileList).then(() => {
+          http.put(backendApiUrlPrefix + '/metadata', fileList).then(() => {
             window.location.reload();
           });
         }
@@ -76,7 +77,7 @@ const WorkflowList = (props) => {
     .addEventListener("change", importFiles);
   };
 
-  let menu = upperMenu(props.history, openFileUpload);
+  let menu = upperMenu(props.history, openFileUpload, frontendUrlPrefix);
 
   return (
       <Container style={{ textAlign: "left", marginTop: "20px" }}>
@@ -88,16 +89,16 @@ const WorkflowList = (props) => {
             style={{ marginBottom: "20px" }}
         >
           <Tab mountOnEnter unmountOnExit eventKey="defs" title="Definitions">
-            <WorkflowDefs />
+            <WorkflowDefs backendApiUrlPrefix={backendApiUrlPrefix} frontendUrlPrefix={frontendUrlPrefix}/>
           </Tab>
           <Tab mountOnEnter unmountOnExit eventKey="exec" title="Executed">
-            <WorkflowExec query={query} />
+            <WorkflowExec query={query} backendApiUrlPrefix={backendApiUrlPrefix} frontendUrlPrefix={frontendUrlPrefix}/>
           </Tab>
           <Tab mountOnEnter unmountOnExit eventKey="scheduled" title="Scheduled">
-            <Scheduling />
+            <Scheduling backendApiUrlPrefix={backendApiUrlPrefix}/>
           </Tab>
           <Tab eventKey="eventlisteners" title="Event Listeners">
-            <EventListeners/>
+            <EventListeners backendApiUrlPrefix={backendApiUrlPrefix}/>
           </Tab>
         </Tabs>
       </Container>

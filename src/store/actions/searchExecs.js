@@ -1,6 +1,5 @@
 import { sortBy } from "lodash";
 import { HttpClient as http } from "../../common/HttpClient";
-import { conductorApiUrlPrefix } from "../../constants";
 
 export const RECEIVE_NEW_DATA = "RECEIVE_NEW_DATA";
 export const HIERARCHY_NEW_DATA = "HIERARCHY_NEW_DATA";

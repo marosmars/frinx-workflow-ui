@@ -4,10 +4,11 @@ import { withRouter } from "react-router-dom";
 import WorkflowDefsReadOnly from "./WorkflowDefs/WorkflowDefsReadOnly";
 import WorkflowExec from "./WorkflowExec/WorkflowExec";
 import {changeUrl, exportButton} from './workflowUtils'
-import { conductorRbacApiUrlPrefix } from "../../constants";
 
 const WorkflowListReadOnly = (props) => {
-  let urlUpdater = changeUrl(props.history);
+  const backendApiUrlPrefix = props.backendApiUrlPrefix;
+  const frontendUrlPrefix = props.frontendUrlPrefix;
+  let urlUpdater = changeUrl(props.history, frontendUrlPrefix);
   let query = props.match.params.wfid ? props.match.params.wfid : null;
 
   return (
@@ -23,10 +24,10 @@ const WorkflowListReadOnly = (props) => {
             style={{ marginBottom: "20px" }}
         >
           <Tab mountOnEnter unmountOnExit eventKey="defs" title="Definitions">
-            <WorkflowDefsReadOnly backendApiUrlPrefix={conductorRbacApiUrlPrefix}/>
+            <WorkflowDefsReadOnly backendApiUrlPrefix={backendApiUrlPrefix} frontendUrlPrefix={frontendUrlPrefix}/>
           </Tab>
           <Tab mountOnEnter unmountOnExit eventKey="exec" title="Executed">
-            <WorkflowExec query={query} backendApiUrlPrefix={conductorRbacApiUrlPrefix}/>
+            <WorkflowExec query={query} backendApiUrlPrefix={backendApiUrlPrefix} frontendUrlPrefix={frontendUrlPrefix}/>
           </Tab>
         </Tabs>
       </Container>

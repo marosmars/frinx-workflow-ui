@@ -22,7 +22,6 @@ import DetailsModal from "./DetailsModal/DetailsModal";
 import WorkflowBulk from "./WorkflowBulk/WorkflowBulk";
 import "./WorkflowExec.css";
 import { HttpClient as http } from "../../../common/HttpClient";
-import { conductorApiUrlPrefix } from "../../../constants";
 
 class WorkflowExec extends Component {
   constructor(props) {
@@ -43,7 +42,8 @@ class WorkflowExec extends Component {
       sort: [2, 2, 2]
     };
     this.table = React.createRef();
-    this.backendApiUrlPrefix = props.backendApiUrlPrefix ?? conductorApiUrlPrefix;
+    this.backendApiUrlPrefix = props.backendApiUrlPrefix;
+    this.frontendUrlPrefix = props.frontendUrlPrefix;
   }
 
   componentWillMount() {
@@ -493,6 +493,7 @@ class WorkflowExec extends Component {
         }
         show={this.state.detailsModal}
         backendApiUrlPrefix={this.backendApiUrlPrefix}
+        frontendUrlPrefix={this.frontendUrlPrefix}
       />
     ) : null;
 

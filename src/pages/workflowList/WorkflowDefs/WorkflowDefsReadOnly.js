@@ -20,7 +20,6 @@ import DefinitionModal from "./DefinitonModal/DefinitionModal";
 import DiagramModal from "./DiagramModal/DiagramModal";
 import InputModal from "./InputModal/InputModal";
 import { HttpClient as http } from "../../../common/HttpClient";
-import { conductorApiUrlPrefix, frontendUrlPrefix } from "../../../constants";
 
 class WorkflowDefsReadOnly extends WorkflowDefs {
   constructor(props) {

@@ -3,11 +3,10 @@ import React, { useEffect, useState } from "react";
 import { Button, Modal } from "react-bootstrap";
 import WorkflowDia from "../../WorkflowExec/DetailsModal/WorkflowDia/WorkflowDia";
 import { HttpClient as http } from "../../../../common/HttpClient";
-import { conductorApiUrlPrefix } from "../../../../constants";
 
 const DiagramModal = props => {
   const [meta, setMeta] = useState([]);
-  const backendApiUrlPrefix = props.backendApiUrlPrefix ?? conductorApiUrlPrefix;
+  const backendApiUrlPrefix = props.backendApiUrlPrefix;
 
   useEffect(() => {
     const name = props.wf.split(" / ")[0];

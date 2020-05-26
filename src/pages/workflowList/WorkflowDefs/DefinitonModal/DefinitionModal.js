@@ -3,11 +3,10 @@ import React, { useEffect, useState } from "react";
 import { Button, Modal } from "react-bootstrap";
 import Highlight from "react-highlight.js";
 import { HttpClient as http } from "../../../../common/HttpClient";
-import { conductorApiUrlPrefix } from "../../../../constants";
 
 const DefinitionModal = (props) => {
   const [definition, setDefinition] = useState("");
-  const backendApiUrlPrefix = props.backendApiUrlPrefix ?? conductorApiUrlPrefix;
+  const backendApiUrlPrefix = props.backendApiUrlPrefix;
 
   useEffect(() => {
     const name = props.wf.split(" / ")[0];

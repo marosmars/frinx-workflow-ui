@@ -12,7 +12,6 @@ import {
 } from "react-bootstrap";
 import { connect } from "react-redux";
 import * as bulkActions from "../../../../store/actions/bulk";
-+import { conductorApiUrlPrefix } from "../../../../constants";
 
 class WorkflowBulk extends Component {
   constructor(props) {
@@ -20,7 +19,7 @@ class WorkflowBulk extends Component {
     this.state = {
       showBulk: null
     };
-    this.backendApiUrlPrefix = props.backendApiUrlPrefix ?? conductorApiUrlPrefix;
+    this.backendApiUrlPrefix = props.backendApiUrlPrefix;
   }
 
   performOperation(e) {

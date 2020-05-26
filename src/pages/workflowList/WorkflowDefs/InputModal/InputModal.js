@@ -14,7 +14,6 @@ import { Typeahead } from "react-bootstrap-typeahead";
 import { getMountedDevices } from "../../../../store/actions/mountedDevices";
 import { storeWorkflowId } from "../../../../store/actions/builder";
 import { HttpClient as http } from "../../../../common/HttpClient";
-import { conductorApiUrlPrefix, frontendUrlPrefix } from "../../../../constants";
 
 
 const getInputs = def => {
@@ -68,7 +67,8 @@ function InputModal(props) {
     values: []
   });
   const [waitingWfs, setWaitingWfs] = useState([]);
-  const backendApiUrlPrefix = props.backendApiUrlPrefix ?? conductorApiUrlPrefix;
+  const backendApiUrlPrefix = props.backendApiUrlPrefix;
+  const frontendUrlPrefix = props.frontendUrlPrefix;
 
   useEffect(() => {
     let name = props.wf.split(" / ")[0];

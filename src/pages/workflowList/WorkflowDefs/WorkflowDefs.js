@@ -21,7 +21,6 @@ import DiagramModal from "./DiagramModal/DiagramModal";
 +import SchedulingModal from "../Scheduling/SchedulingModal/SchedulingModal";
 import InputModal from "./InputModal/InputModal";
 import { HttpClient as http } from "../../../common/HttpClient";
-import { conductorApiUrlPrefix, frontendUrlPrefix } from "../../../constants";
 
 export class WorkflowDefs extends Component {
   constructor(props) {
@@ -43,7 +42,8 @@ export class WorkflowDefs extends Component {
     };
     this.table = React.createRef();
     this.onEditSearch = this.onEditSearch.bind(this);
-    this.backendApiUrlPrefix = props.backendApiUrlPrefix ?? conductorApiUrlPrefix;
+    this.backendApiUrlPrefix = props.backendApiUrlPrefix;
+    this.frontendUrlPrefix = props.frontendUrlPrefix;
   }
 
   componentWillMount() {
@@ -299,7 +299,7 @@ export class WorkflowDefs extends Component {
   editWorkflow() {
     const name = this.getActiveWorkflowName();
     const version = this.getActiveWorkflowVersion();
-    this.props.history.push(`${frontendUrlPrefix}/builder/${name}/${version}`);
+    this.props.history.push(`${this.frontendUrlPrefix}/builder/${name}/${version}`);
   }
 
   deleteWorkflow() {
@@ -520,6 +520,7 @@ export class WorkflowDefs extends Component {
         modalHandler={this.showInputModal.bind(this)}
         show={this.state.inputModal}
         backendApiUrlPrefix={this.backendApiUrlPrefix}
+        frontendUrlPrefix={this.frontendUrlPrefix}
       />
     ) : null;
   }
